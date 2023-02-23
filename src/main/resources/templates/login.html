@@ -15,7 +15,7 @@
 <body>
 <div class="loginClass">
     <h1 class="text-center" style="margin-top: 5%;">Sign In</h1>
-    <form class="col" style="float: none; margin:auto;" th:object="${loginDto}" th:action="@{/loginProcessing}"
+    <form class="col" style="float: none; margin:auto;" th:object="${loginDto}" th:action="@{/login}"
           th:method="post">
         <div th:if="${error} == 'true'"><p class="text-center" style="margin-top: 2%; color: #d92323;">login error
             message</p></div>

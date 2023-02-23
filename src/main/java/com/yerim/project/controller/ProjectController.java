@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -32,16 +34,7 @@ public class ProjectController {
     }
 
     @PostMapping("/login")
-    public void postLogin(@ModelAttribute LoginDto loginDto) {
-        /*PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        User user = principal.getUser();
-        log.info(user.getEmail());
-        log.info(user.getPassword());
-        User user1 = principalDetails.getUser();
-        log.info(user1.getEmail());
-        log.info(user1.getPassword());*/
-        log.info(loginDto.getEmail());
-        log.info(loginDto.getPassword());
+    public void postLogin() {
     }
 
     @PostMapping("/loginProcessing")
@@ -65,6 +58,7 @@ public class ProjectController {
         user.setPassword(passwordEncoder.encode(joinDto.getPassword()));
         user.setEmail(joinDto.getEmail());
         user.setRole(Role.ROLE_USER);
+        user.setLastLoginAt(LocalDateTime.now());
         userService.save(user);
         return "redirect:/login";
     }

@@ -1,5 +1,6 @@
 package com.yerim.project.config;
 
+import com.yerim.project.auth.PrincipalDetails;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,10 +15,11 @@ import java.io.IOException;
 public class MyLoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        HttpSession httpSession = request.getSession();
-
-        httpSession.setAttribute("greeting", authentication.getName() + "님 반갑습니다.");
         log.info("login success handler");
+        HttpSession httpSession = request.getSession();
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String username = principal.getUser().getUsername();
+        httpSession.setAttribute("sessionMessage", "Hello " + username);
         response.sendRedirect("/");
     }
 }

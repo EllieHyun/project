@@ -28,7 +28,7 @@ public class SecurityConfig {
                     .failureUrl("/login?error=true")
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .loginProcessingUrl("/loginProcessing")
+                    .loginProcessingUrl("/login")
                     .successHandler(new MyLoginSuccessHandler())
                     .failureHandler(new MyLoginFailureHandler())
                 .and()
