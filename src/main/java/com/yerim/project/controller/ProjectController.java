@@ -1,33 +1,82 @@
 package com.yerim.project.controller;
 
+import com.yerim.project.dto.JoinDto;
 import com.yerim.project.dto.LoginDto;
+import com.yerim.project.entity.Role;
 import com.yerim.project.entity.User;
-import com.yerim.project.service.ProjectService;
+import com.yerim.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
 public class ProjectController {
 
-    private ProjectService projectService;
+    private final UserService userService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
-    public String getLogin(Model model) {
+    public String getLogin(@RequestParam(defaultValue = "false") String error, Model model) {
+        log.info("login error = " + error);
+//        if(error.equals("true")) {
+//            model.addAttribute("errorMessage", errorMessage);
+//        }
+        model.addAttribute("error", error);
         model.addAttribute("loginDto", new LoginDto());
         return "login";
     }
 
     @PostMapping("/login")
     public void postLogin(@ModelAttribute LoginDto loginDto) {
+        /*PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        User user = principal.getUser();
+        log.info(user.getEmail());
+        log.info(user.getPassword());
+        User user1 = principalDetails.getUser();
+        log.info(user1.getEmail());
+        log.info(user1.getPassword());*/
         log.info(loginDto.getEmail());
         log.info(loginDto.getPassword());
+    }
+
+    @PostMapping("/loginProcessing")
+    public void getLoginProcessing() {
+        log.info("loginProcessing");
+    }
+
+    @GetMapping("/join")
+    public String getJoin(Model model) {
+        model.addAttribute("joinDto", new JoinDto());
+        return "join";
+    }
+
+    @PostMapping("/join")
+    public String postJoin(@ModelAttribute JoinDto joinDto) {
+        log.info(joinDto.getUsername());
+        log.info(joinDto.getEmail());
+        log.info(joinDto.getPassword());
+        User user = new User();
+        user.setUsername(joinDto.getUsername());
+        user.setPassword(passwordEncoder.encode(joinDto.getPassword()));
+        user.setEmail(joinDto.getEmail());
+        user.setRole(Role.ROLE_USER);
+        userService.save(user);
+        return "redirect:/login";
+    }
+
+    @GetMapping("/")
+    public String getHome() {
+        log.info("home");
+        return "home";
+    }
+
+    @GetMapping("/user/main")
+    public void getUserMain() {
+        log.info("getUserMain");
     }
 }

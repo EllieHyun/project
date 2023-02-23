@@ -1,0 +1,22 @@
+package com.yerim.project.auth;
+
+import com.yerim.project.entity.User;
+import com.yerim.project.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class PrincipalDetailsService implements UserDetailsService {
+
+    private final UserService userService;
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User userByEmail = userService.findUserByEmail(email);
+        if(userByEmail == null) throw new UsernameNotFoundException("User not found");
+        else return new PrincipalDetails(userByEmail);
+    }
+}

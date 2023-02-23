@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
 
-    private UserRepository uSerREpository;
+    private final UserRepository uSerREpository;
 }
