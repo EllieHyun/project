@@ -1,5 +1,7 @@
 package com.yerim.project.config;
 
+import com.yerim.project.auth.PrincipalOauth2UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,7 +10,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -24,18 +29,26 @@ public class SecurityConfig {
                 .and()
                     .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/home")
+                    .defaultSuccessUrl("/")
                     .failureUrl("/login?error=true")
                     .usernameParameter("email")
                     .passwordParameter("password")
                     .loginProcessingUrl("/login")
-                    .successHandler(new MyLoginSuccessHandler())
-                    .failureHandler(new MyLoginFailureHandler())
+                    .successHandler(new FormLoginSuccessHandler())
+                    .failureHandler(new FormLoginFailureHandler())
                 .and()
                     .logout()
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/login");
-
+                    .logoutSuccessUrl("/login")
+                    .deleteCookies("JSESSIONID")
+                .and()
+                    .oauth2Login()
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/")
+                    .failureUrl("/login?error=true")
+                    .successHandler(new OAuthLoginSuccessHandler())
+                    .userInfoEndpoint()
+                    .userService(principalOauth2UserService);
         return http.build();
     }
 }
