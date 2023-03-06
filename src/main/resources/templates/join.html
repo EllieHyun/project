@@ -15,7 +15,7 @@
 <body>
 <div class="loginClass">
     <h1 class="text-center" style="margin-top: 5%;">Sign In</h1>
-    <form class="col" style="float: none; margin:auto;" th:object="${joinDto}" th:action="@{/join}" th:method="post">
+    <form class="col" style="float: none; margin:auto;" th:object="${userJoinDto}" th:action="@{/join}" th:method="post">
         <div class="form-group row" style="float: none; margin:auto; width: 30%">
             <label for="username" class="form-label mt-4">Name</label>
             <input type="text" class="form-control" th:field="*{username}" id="username" aria-describedby="emailHelp"

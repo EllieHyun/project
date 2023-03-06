@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long id;
 
     @Column(name = "email", nullable = false)
@@ -36,7 +36,7 @@ public class User {
     @Column(name = "provider")
     private String provider;   // oauth2를 이용할 경우 어떤 플랫폼을 이용하는지
 
-    @Column(name = "providerId")
+    @Column(name = "provider_id")
     private String providerId;   // oauth2를 이용할 경우 id값
 
     @Builder(builderClassName = "UserDetailRegister", builderMethodName = "userDetailRegister")

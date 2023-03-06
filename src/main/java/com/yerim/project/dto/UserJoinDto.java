@@ -3,10 +3,11 @@ package com.yerim.project.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class LoginDto {
+@Setter
+public class UserJoinDto {
 
     private String email;
     private String password;
+    private String username;
 }
